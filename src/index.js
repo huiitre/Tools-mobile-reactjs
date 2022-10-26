@@ -2,7 +2,6 @@
 import { render } from 'react-dom';
 
 const App = () => {
-  console.log('%c index.js #5 || env', 'background:red;color:#fff;font-weight:bold;', process.env.TOOLS_VERSION);
   return (
     <h1>dqsdsqd</h1>
   )
