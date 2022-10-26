@@ -1,9 +1,30 @@
 // == Import : npm
 import { render } from 'react-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import store from './store/store';
+
+import Routes from './routes';
 
 const App = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60000 * 24,
+        refetchOnWindowFocus: true,
+      }
+    }
+  })
+
   return (
-    <h1>dqsdsqd</h1>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Provider>
   )
 };
 
