@@ -1,3 +1,5 @@
+import userReducer from './reducers/user';
+
 const {
   compose,
   applyMiddleware,
@@ -8,7 +10,8 @@ const { default: userMiddleware } = require('./middlewares/user');
 const { default: coreReducer } = require('./reducers/core')
 
 const rootReducer = combineReducers({
-  user: coreReducer,
+  core: coreReducer,
+  user: userReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -47,6 +47,9 @@
     ],
     "spaced-comment": [
       "off"
+    ],
+    "linebreak-style": [
+      "off"
     ]
   },
   "settings": {
