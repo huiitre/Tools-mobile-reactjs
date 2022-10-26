@@ -1,14 +1,19 @@
 // == Import : npm
 import { render } from 'react-dom';
 
-// == Import : local
-// Composants
-import App from './App';
+const App = () => {
+  console.log('%c index.js #5 || env', 'background:red;color:#fff;font-weight:bold;', process.env.TOOLS_VERSION);
+  return (
+    <h1>dqsdsqd</h1>
+  )
+};
 
 // == Render
 // 1. Élément React racine (celui qui contient l'ensemble de l'app)
 //    => crée une structure d'objets imbriqués (DOM virtuel)
-const rootReactElement = <App />;
+const rootReactElement = (
+  <App />
+);
 // 2. La cible du DOM (là où la structure doit prendre vie dans le DOM)
 const target = document.getElementById('root');
 // 3. Déclenchement du rendu de React (virtuel) => DOM (page web)

@@ -35,7 +35,13 @@
     "func-names": "off",
     "object-shorthand": "off",
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "arrow-body-style": [
+      "off"
+    ],
+    "semi": [
+      "off"
+    ]
   },
   "settings": {
     "import/resolver": {
