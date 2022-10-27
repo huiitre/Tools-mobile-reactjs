@@ -1,6 +1,10 @@
 @use 'reset';
 @use 'vars';
 
+/* :root {
+  --toastify-toast-width: 180px;
+} */
+
 body {
   background-color: vars.$main-background;
   font-family: Avenir, Helvetica, Arial, sans-serif;

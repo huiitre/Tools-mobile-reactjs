@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import Button from '../../Common/components/form/buttons/Button';
 import InputField from '../../Common/components/form/fields/InputField';
 import InputRadio from '../../Common/components/form/fields/InputRadio';
+import defaultToast from '../../Common/components/toast/defaultToast';
 import '../styles/login.scss';
 
 const Login = () => {
@@ -39,6 +41,13 @@ const Login = () => {
     }
 
     //* vérification du status et envoie ou non en AJAX
+    if (status === 0) {
+      for (const val of errorList) {
+        toast.error(val, defaultToast)
+      }
+    }
+
+    //* exécution de la requête AJAX
   }
 
   //* Liste input radio

@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import store from './store/store';
 
 import Routes from './routes';
@@ -22,6 +24,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes />
+          <ToastContainer icon={false} style={{ textAlign: 'center', fontSize: '1.25rem', fontWeight: 'bold' }} />
         </BrowserRouter>
       </QueryClientProvider>
     </Provider>
