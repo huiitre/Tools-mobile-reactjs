@@ -62,6 +62,9 @@
     ],
     "nonblock-statement-body-position": [
       "off"
+    ],
+    "max-len": [
+      "off"
     ]
   },
   "settings": {
