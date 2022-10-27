@@ -50,6 +50,18 @@
     ],
     "linebreak-style": [
       "off"
+    ],
+    "react/self-closing-comp": [
+      "off"
+    ],
+    "react/prop-types": [
+      "off"
+    ],
+    "curly": [
+      "off"
+    ],
+    "nonblock-statement-body-position": [
+      "off"
     ]
   },
   "settings": {
