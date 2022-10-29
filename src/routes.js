@@ -36,9 +36,8 @@ const Routes = () => {
     navigate(loc)
   }, [isLogged])
 
-  //* on récupère le core.connectionLoading pour éviter d'afficher le formulaire de connexion quand loadUser est exécuté
+  //? on récupère le core.connectionLoading pour éviter d'afficher le formulaire de connexion quand loadUser est exécuté
   const { connectionLoading } = useSelector((state) => state.core)
-  console.log('%c routes.js #37 || path : ', 'background:red;color:#fff;font-weight:bold;', location);
 
   return (
     //? Les balises vides sont obligatoires sinon connexionLoading devient une méthode et non la variable récupéré plus haut
