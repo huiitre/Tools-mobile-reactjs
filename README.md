@@ -40,4 +40,4 @@ cordova run android
 2. Changer le numéro de version dans le fichier `src-cordova/config.xml`
 
 ## Notes de versions
-### 2.0 développement en cours
+### 1.0 développement en cours

@@ -47,6 +47,13 @@ const coreReducer = (state = initialState, action = {}) => {
       localStorage.clear()
       return {
         ...state,
+        user: {
+          ...state.user,
+          username: '',
+          password: '',
+          name: '',
+          isLogged: false
+        },
       }
     }
 

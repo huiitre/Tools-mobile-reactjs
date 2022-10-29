@@ -8,7 +8,8 @@ const InputField = ({
   name,
   onChange,
   value,
-  label
+  label,
+  onClick
 }) => (
   <>
     <label htmlFor={id}>{label}</label>
@@ -20,6 +21,7 @@ const InputField = ({
       name={name}
       onChange={onChange}
       value={value}
+      onClick={onClick}
     />
   </>
 );

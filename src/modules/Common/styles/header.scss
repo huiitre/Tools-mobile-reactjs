@@ -1,0 +1,48 @@
+@use '/src/assets/styles/vars';
+
+.header {
+	height:  3rem;
+	display:  flex;
+	flex-direction:  row;
+	justify-content:  space-between;
+	align-items:  center;
+	max-width:  100%;
+  // margin-bottom:  3rem;
+	// top:  0;
+	background-color:  vars.$header-background;
+
+	& .link {
+		text-decoration:  none;
+	}
+
+	&__title {
+		padding-left:  1rem;
+
+		&-name {
+			font-size:  1.2rem;
+			font-weight:  bold;
+			color:  #fff;
+		}
+	}
+
+	&__disconnect {
+		padding-right:  0.5rem;
+
+		&-icon {
+			font-size:  2rem;
+		}
+	}
+
+	&__config {
+		padding-left:  0.5rem;
+		&-icon {
+			font-size:  2rem;
+			color:  #fff;
+		}
+	}
+}
+
+//* Boutons Oui et Non pour la déconnexion
+.button__logout:not(:last-child) {
+  margin: 1rem 0;
+}

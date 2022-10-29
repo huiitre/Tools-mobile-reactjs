@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   Route, Routes as RouterRoutes, useLocation, useNavigate, Navigate
 } from 'react-router-dom'
+import Header from './modules/Common/components/Header'
 import Spinner from './modules/Common/components/Spinner'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -42,6 +43,7 @@ const Routes = () => {
   return (
     //? Les balises vides sont obligatoires sinon connexionLoading devient une méthode et non la variable récupéré plus haut
     <>
+      <Header />
       {connectionLoading ? (
         <Spinner />
       ) : (

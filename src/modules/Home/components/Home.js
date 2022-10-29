@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
 import '../styles/home.scss';
+import HomeList from './HomeList';
 
 const Home = () => (
-  <div className="">
-    <Link to="/logqsdsqdin">not found</Link>
+  <div className="home">
+    qsdqsdqdqsdqdqsdqsdqsdqsdq
+    <HomeList />
   </div>
 );
 
