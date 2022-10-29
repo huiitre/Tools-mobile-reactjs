@@ -5,7 +5,7 @@
     "browser": true
   },
   "rules": {
-    "brace-style": ["error", "stroustrup"],
+    "brace-style": ["off"],
     "no-param-reassign": [
       "error",
       {
@@ -28,7 +28,7 @@
     "react/forbid-prop-types": "off",
     "react/no-access-state-in-setstate": "warn",
     "react/jsx-one-expression-per-line": "off",
-    "react/destructuring-assignment": "warn",
+    "react/destructuring-assignment": "off",
     "react/no-unescaped-entities": "off",
     "react/jsx-props-no-spreading": "off",
     "react/state-in-constructor": "off",
@@ -68,7 +68,8 @@
     ],
     "no-restricted-syntax": [
       "off"
-    ]
+    ],
+    "no-lone-blocks": "off"
   },
   "settings": {
     "import/resolver": {

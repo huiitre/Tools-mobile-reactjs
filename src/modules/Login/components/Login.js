@@ -1,21 +1,24 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Button from '../../Common/components/form/buttons/Button';
 import InputField from '../../Common/components/form/fields/InputField';
 import InputRadio from '../../Common/components/form/fields/InputRadio';
 import defaultToast from '../../Common/components/toast/defaultToast';
 import '../styles/login.scss';
+import core from '../../../store/actions/core';
 
 const Login = () => {
   //* Hooks locaux
-  const [username, setUsername] = useState('');
+  /* const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [instance, setInstance] = useState('');
-  const [protocol, setProtocol] = useState('http');
+  const [protocol, setProtocol] = useState('http'); */
 
   //* redux
   const dispatch = useDispatch();
+  const { username, password } = useSelector((state) => state.core.user);
+  const { instance, protocol } = useSelector((state) => state.core.apiUrl)
 
   //* submit
   const handleSubmitConnexion = (e) => {
@@ -45,9 +48,15 @@ const Login = () => {
       for (const val of errorList) {
         toast.error(val, defaultToast)
       }
+      return
     }
 
-    //* exécution de la requête AJAX
+    const credentials = {
+      username,
+      password,
+    }
+
+    dispatch(core.apiLoginCheck(credentials))
   }
 
   //* Liste input radio
@@ -67,39 +76,41 @@ const Login = () => {
       <form className="login__form" onSubmit={handleSubmitConnexion}>
         <div className="login__form__username">
           <InputField
+            type="text"
             name="username"
             className="field username"
             id="field__username"
             placeholder="Nom d'utilisateur"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => dispatch(core.setUsername(e.target.value))}
             value={username}
           />
         </div>
         <div className="login__form__password">
           <InputField
+            type="password"
             name="password"
             className="field password"
-            id="field__username"
+            id="field__password"
             placeholder="Mot de passe"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => dispatch(core.setPassword(e.target.value))}
             value={password}
           />
         </div>
         <div className="login__form__instance">
           <InputField
+            type="text"
             name="instance"
             className="field instance"
-            id="field__username"
+            id="field__instance"
             placeholder="Instance"
-            onChange={(e) => setInstance(e.target.value)}
+            onChange={(e) => dispatch(core.setInstance(e.target.value))}
             value={instance}
           />
         </div>
-        <div className="login__form__protocol" onChange={(e) => setProtocol(e.target.value)}>
+        <div className="login__form__protocol" onChange={(e) => dispatch(core.setProtocol(e.target.value))}>
           <InputRadio
             list={radioList}
             className="protocol"
-            onChange={(e) => setProtocol(e.target.value)}
             value={protocol}
           />
         </div>

@@ -1,5 +1,9 @@
+import Home from '../modules/Home/components/Home';
+
 const HomePage = () => (
-  <main className="page">home page</main>
+  <main className="page">
+    <Home />
+  </main>
 );
 
 export default HomePage;
