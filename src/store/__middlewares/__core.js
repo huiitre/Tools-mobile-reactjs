@@ -1,7 +1,9 @@
 //* Import des actions
 import { toast } from 'react-toastify'
-import core from '../actions/core'
+import core from '../__actions/__core'
 import useAxios from '../../services/axiosInstance'
+import LS from '../../services/localStorage'
+import { insertUser, destroySession, setConnectionLoading } from '../reducers/core'
 
 const CoreMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
@@ -19,25 +21,32 @@ const CoreMiddleware = (store) => (next) => (action) => {
             const { token, data: { username, name } } = response.data
 
             //* on insère les données basiques de l'user dans redux
-            store.dispatch(core.insertUser({ username, name, isLogged: true }))
+            store.dispatch(insertUser({ username, name, isLogged: true }))
 
-            //* on insère le token et l'instance dans le localstorage
             const { instance, protocol } = store.getState().core.apiUrl
-            store.dispatch(core.insertLocalStorage({ token, instance, protocol }))
-
             //todo faire un call afin de récupérer la config utilisateur
             //todo afin de vérifier si il souhaite stocker ces identifiants en LS ou non
             //todo en attendant, on le fait quand même
-            store.dispatch(core.insertLocalStorage({ username: credentials.username, password: credentials.password }))
+            const coreConfig = {
+              token,
+              instance,
+              protocol,
+              username: credentials.username,
+              password: credentials.password
+            }
+            //* on insère le token et l'instance dans le localstorage
+            LS.set('core', coreConfig)
 
             res('Vous êtes connecté !')
           })
-          .catch((e) => {
-            store.dispatch(core.destroySession())
-            console.log('%c core.js #30 || error : ', 'background:red;color:#fff;font-weight:bold;', e);
+          .catch((error) => {
+            console.log('%c core.js #44 || error : ', 'background:red;color:#fff;font-weight:bold;', error);
+            LS.clear()
+
             let msg;
-            if (e.response.data.message !== undefined) {
-              msg = e.response.data.message
+
+            if (error?.response?.data?.message !== undefined) {
+              msg = error.response.data.message
               rej(msg)
             }
             msg = 'Une erreur de connexion est survenue'
@@ -66,8 +75,8 @@ const CoreMiddleware = (store) => (next) => (action) => {
         useAxios.get('/user/profile')
           .then((response) => {
             //* on insère les données basiques de l'user dans redux
-            const { username, name } = response.data
-            store.dispatch(core.insertUser({ username, name, isLogged: true }))
+            const { email, name } = response.data
+            store.dispatch(insertUser({ username: email, name, isLogged: true }))
 
             //todo redirection vers home
             res()
@@ -75,10 +84,9 @@ const CoreMiddleware = (store) => (next) => (action) => {
           .catch((e) => {
             console.log('%c core.js #70 || e : ', 'background:red;color:#fff;font-weight:bold;', e.response);
 
-            const username = localStorage.getItem('username')
-            const password = localStorage.getItem('password')
+            const { username, password } = LS.get('core')
 
-            if (e.response.status === 401 && e.response.statusText === 'Unauthorized' && username !== '' && password !== '') {
+            if (e.response.status === 401 && e.response.statusText === 'Unauthorized' && !!username && Boolean(password)) {
               const credentials = { username, password }
 
               //* on tente la connexion avec les identifiants
@@ -86,12 +94,13 @@ const CoreMiddleware = (store) => (next) => (action) => {
               rej()
             } else {
               //* destroySession()
-              store.dispatch(core.destroySession())
+              store.dispatch(destroySession())
+              LS.clear()
               //* redirection vers /login
               rej()
             }
           })
-          .finally(() => store.dispatch(core.setConnectionLoading(false)))
+          .finally(() => store.dispatch(setConnectionLoading(false)))
       })
 
       toast.promise(

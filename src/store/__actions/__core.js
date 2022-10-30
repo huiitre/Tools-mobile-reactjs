@@ -38,35 +38,11 @@ const core = {
     payload
   }),
 
-  //* ACTION TYPE INSERT_LOCAL_STORAGE
-  INSERT_LOCAL_STORAGE: 'INSERT_LOCAL_STORAGE',
-  //* ACTION CREATOR insertLocalStorage
-  insertLocalStorage: (payload) => ({
-    type: core.INSERT_LOCAL_STORAGE,
-    payload
-  }),
-
   //* ACTION TYPE DESTROY_SESSION
   DESTROY_SESSION: 'DESTROY_SESSION',
   //* ACTION CREATOR destroySession
   destroySession: () => ({
     type: core.DESTROY_SESSION,
-  }),
-
-  //* ACTION TYPE SET_USERNAME
-  SET_USERNAME: 'SET_USERNAME',
-  //* ACTION CREATOR setUsername
-  setUsername: (username) => ({
-    type: core.SET_USERNAME,
-    username
-  }),
-
-  //* ACTION TYPE SET_PASSWORD
-  SET_PASSWORD: 'SET_PASSWORD',
-  //* ACTION CREATOR setPassword
-  setPassword: (password) => ({
-    type: core.SET_PASSWORD,
-    password
   }),
 
   //* ACTION TYPE SET_INSTANCE

@@ -69,7 +69,9 @@
     "no-restricted-syntax": [
       "off"
     ],
-    "no-lone-blocks": "off"
+    "no-lone-blocks": "off",
+    "no-unused-expressions": "off",
+    "import/no-cycle": "off"
   },
   "settings": {
     "import/resolver": {

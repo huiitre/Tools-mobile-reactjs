@@ -1,105 +1,96 @@
-import core from '../actions/core';
+import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
+import defaultToast from '../../modules/Common/components/toast/defaultToast';
+import LS from '../../services/localStorage';
+import { apiLoginCheck, apiLoadUser } from '../thunk/core';
 
 const initialState = {
   apiUrl: {
-    instance: '',
-    protocol: process.env.NODE_ENV === 'development' ? 'http' : 'https',
+    instance: LS.get('core')?.instance || '',
+    protocol: LS.get('core')?.protocol || process.env.NODE_ENV === 'development' ? 'http' : 'https'
   },
   user: {
     username: '',
-    password: '',
     name: '',
     isLogged: false
   },
   connectionLoading: false
 };
 
-const coreReducer = (state = initialState, action = {}) => {
-  switch (action.type) {
-    case core.INSERT_USER: {
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          ...action.payload
-        }
-      }
-    }
+const coreSlice = createSlice({
+  name: 'core',
+  initialState,
+  reducers: {
+    setInstance: (state, action) => { state.apiUrl.instance = action.payload },
+    setProtocol: (state, action) => { state.apiUrl.protocol = action.payload },
+    setConnectionLoading: (state, action) => { state.connectionLoading = action.payload },
+    insertUser: (state, action) => { state.user = action.payload },
+    destroySession: (state) => { state.user = initialState.user }
+  },
+  extraReducers: (builder) => {
+    /**
+     * apiLoginCheck
+     * Connexion de l'utilisateur
+     */
+    builder.addCase(apiLoginCheck.fulfilled, (state, action) => {
+      toast.dismiss()
+      toast.success('Vous êtes connecté !', defaultToast)
 
-    case core.INSERT_LOCAL_STORAGE: {
-      const keys = Object.keys(action.payload)
-      for (const val of keys) {
-        localStorage.setItem(val, action.payload[val])
-      }
-      return {
-        ...state
-      }
-    }
+      const { data } = action.payload
+      const { username, password } = action.meta.arg
 
-    case core.SET_CONNECTION_LOADING: {
-      return {
-        ...state,
-        connectionLoading: action.bool
-      }
-    }
+      state.user = { username, name: data.name, isLogged: true }
 
-    case core.DESTROY_SESSION: {
-      localStorage.clear()
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          username: '',
-          password: '',
-          name: '',
-          isLogged: false
-        },
+      const json = {
+        token: data.token,
+        username,
+        password,
+        instance: state.apiUrl.instance,
+        protocol: state.apiUrl.protocol
       }
-    }
-
-    case core.SET_USERNAME: {
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          username: action.username
-        }
+      LS.set('core', json)
+    })
+    builder.addCase(apiLoginCheck.pending, () => {
+      toast.loading('Connexion en cours ...', defaultToast)
+    })
+    builder.addCase(apiLoginCheck.rejected, (state, action) => {
+      toast.dismiss()
+      const { error } = action
+      let msg;
+      LS.clear()
+      if (error?.response?.data?.message) {
+        msg = error.response.data.message
       }
-    }
+      msg = 'Une erreur de connexion est survenue'
 
-    case core.SET_PASSWORD: {
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          password: action.password
-        }
+      toast.error(msg, defaultToast)
+    })
+
+    /**
+     * apiLoadUser
+     * Récupération des données utilisateur
+     */
+    builder.addCase(apiLoadUser.fulfilled, (state, action) => {
+      state.user = {
+        username: action.payload.data.email,
+        name: action.payload.data.name,
+        isLogged: true
       }
-    }
-
-    case core.SET_INSTANCE: {
-      return {
-        ...state,
-        apiUrl: {
-          ...state.apiUrl,
-          instance: action.instance
-        }
-      }
-    }
-
-    case core.SET_PROTOCOL: {
-      return {
-        ...state,
-        apiUrl: {
-          ...state.apiUrl,
-          protocol: action.protocol
-        }
-      }
-    }
-
-    default:
-      return state;
+      state.connectionLoading = false
+    })
+    builder.addCase(apiLoadUser.pending, (state) => {
+      state.connectionLoading = true
+    })
+    builder.addCase(apiLoadUser.rejected, (state, action) => {
+      state.connectionLoading = false
+      LS.clear()
+      state.user = initialState.user
+    })
   }
-};
+})
 
-export default coreReducer;
+// export const { actions: core } = coreSlice
+export const {
+  setInstance, setProtocol, insertUser, setConnectionLoading, destroySession
+} = coreSlice.actions
+export default coreSlice.reducer

@@ -5,8 +5,10 @@ import { toast } from 'react-toastify';
 import useModal from '../hooks/useModal';
 import Modal from './Modal';
 import InputField from './form/fields/InputField';
-import core from '../../../store/actions/core';
+// import core from '../../../store/actions/core';
 import fastToast from './toast/fastToast';
+import LS from '../../../services/localStorage';
+import { destroySession } from '../../../store/reducers/core';
 
 const Header = () => {
   const { isLogged } = useSelector((state) => state.core.user);
@@ -19,7 +21,8 @@ const Header = () => {
 
   const handleLogout = (e) => {
     if (e.target.value === 'Oui') {
-      dispatch(core.destroySession())
+      dispatch(destroySession())
+      LS.clear()
       navigate('/login')
     }
     toggleLoginForm()

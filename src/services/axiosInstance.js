@@ -1,6 +1,6 @@
 import axios from 'axios';
-import core from '../store/actions/core';
 import store from '../store/store';
+import LS from './localStorage';
 
 const client = axios.create({
   headers: {
@@ -10,20 +10,11 @@ const client = axios.create({
 
 client.interceptors.request.use((config) => {
   //* Gestion du token Bearer
-  const token = localStorage.getItem('token')
-  if (token) {
-    config.headers.authorization = `Bearer ${token}`
+  const coreObj = LS.get('core')
+  if (coreObj?.token) {
+    config.headers.authorization = `Bearer ${coreObj?.token}`
   } else {
     config.headers.authorization = ''
-  }
-
-  //* Gestion de l'url API
-  const inst = localStorage.getItem('instance')
-  const proto = localStorage.getItem('protocol')
-
-  if (inst && proto) {
-    store.dispatch(core.setInstance(inst))
-    store.dispatch(core.setProtocol(proto))
   }
 
   const { instance, protocol } = store.getState().core.apiUrl

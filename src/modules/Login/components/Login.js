@@ -1,22 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 import Button from '../../Common/components/form/buttons/Button';
 import InputField from '../../Common/components/form/fields/InputField';
 import InputRadio from '../../Common/components/form/fields/InputRadio';
 import defaultToast from '../../Common/components/toast/defaultToast';
 import '../styles/login.scss';
-import core from '../../../store/actions/core';
+import { setInstance, setProtocol } from '../../../store/reducers/core'
+import { apiLoginCheck } from '../../../store/thunk/core';
 
 const Login = () => {
   //* Hooks locaux
-  /* const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [instance, setInstance] = useState('');
-  const [protocol, setProtocol] = useState('http'); */
 
   //* redux
   const dispatch = useDispatch();
-  const { username, password } = useSelector((state) => state.core.user);
   const { instance, protocol } = useSelector((state) => state.core.apiUrl)
 
   //* submit
@@ -55,7 +54,7 @@ const Login = () => {
       password,
     }
 
-    dispatch(core.apiLoginCheck(credentials))
+    dispatch(apiLoginCheck(credentials))
   }
 
   //* Liste input radio
@@ -80,7 +79,7 @@ const Login = () => {
             className="field username"
             id="field__username"
             placeholder="Nom d'utilisateur"
-            onChange={(e) => dispatch(core.setUsername(e.target.value))}
+            onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
         </div>
@@ -91,7 +90,7 @@ const Login = () => {
             className="field password"
             id="field__password"
             placeholder="Mot de passe"
-            onChange={(e) => dispatch(core.setPassword(e.target.value))}
+            onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
         </div>
@@ -102,11 +101,11 @@ const Login = () => {
             className="field instance"
             id="field__instance"
             placeholder="Instance"
-            onChange={(e) => dispatch(core.setInstance(e.target.value))}
+            onChange={(e) => dispatch(setInstance(e.target.value))}
             value={instance}
           />
         </div>
-        <div className="login__form__protocol" onChange={(e) => dispatch(core.setProtocol(e.target.value))}>
+        <div className="login__form__protocol" onChange={(e) => dispatch(setProtocol(e.target.value))}>
           <InputRadio
             list={radioList}
             className="protocol"

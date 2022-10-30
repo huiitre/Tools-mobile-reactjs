@@ -8,7 +8,9 @@ import Spinner from './modules/Common/components/Spinner'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
-import core from './store/actions/core'
+import LS from './services/localStorage'
+import { destroySession } from './store/reducers/core'
+import { apiLoadUser } from './store/thunk/core'
 
 const Routes = () => {
   const dispatch = useDispatch();
@@ -20,10 +22,21 @@ const Routes = () => {
   //* On lance loadUser si il y a quelque chose en localstorage
   //* sinon on détruit la session au cas où
   useEffect(() => {
-    if (localStorage.getItem('token') && localStorage.getItem('instance') && localStorage.getItem('protocol')) {
-      dispatch(core.apiLoadUser())
+    const coreObj = LS.get('core')
+
+    if (!coreObj) {
+      dispatch(destroySession())
+      LS.clear()
+      return
+    }
+
+    const { token, instance, protocol } = coreObj
+
+    if (token && instance && protocol) {
+      dispatch(apiLoadUser())
     } else {
-      dispatch(core.destroySession())
+      dispatch(destroySession())
+      LS.clear()
     }
 
     //* pour android
