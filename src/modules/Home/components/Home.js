@@ -1,10 +1,9 @@
 import '../styles/home.scss';
-import HomeList from './HomeList';
+import ModuleList from './ModuleList';
 
 const Home = () => (
   <div className="home">
-    qsdqsdqdqsdqdqsdqsdqsdqsdq
-    <HomeList />
+    <ModuleList />
   </div>
 );
 
