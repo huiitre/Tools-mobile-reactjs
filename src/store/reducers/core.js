@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import defaultToast from '../../modules/Common/components/toast/defaultToast';
+import { defaultToast } from '../../modules/Common/components/toast/toasts';
 import LS from '../../services/localStorage';
 import { apiLoginCheck, apiLoadUser } from '../thunk/core';
 
@@ -35,7 +35,7 @@ const coreSlice = createSlice({
      */
     builder.addCase(apiLoginCheck.fulfilled, (state, action) => {
       toast.dismiss()
-      toast.success('Vous êtes connecté !', defaultToast)
+      toast.success('Vous êtes connecté !', defaultToast())
 
       const { data } = action.payload
       const { username, password } = action.meta.arg
@@ -53,7 +53,7 @@ const coreSlice = createSlice({
       LS.set('core', json)
     })
     builder.addCase(apiLoginCheck.pending, () => {
-      toast.loading('Connexion en cours ...', defaultToast)
+      toast.loading('Connexion en cours ...', defaultToast())
     })
     builder.addCase(apiLoginCheck.rejected, (state, action) => {
       toast.dismiss()
@@ -65,7 +65,7 @@ const coreSlice = createSlice({
       }
       msg = 'Une erreur de connexion est survenue'
 
-      toast.error(msg, defaultToast)
+      toast.error(msg, defaultToast())
     })
 
     /**

@@ -1,8 +1,8 @@
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import client from '../../../services/axiosInstance';
 import gestionEssenceQueryKeys from '../keys-constants'
 
-const useFetchGestionEssenceList = (key) => useInfiniteQuery(
+const useFetchGestionEssenceList = (key, onSettledFetch) => useInfiniteQuery(
   gestionEssenceQueryKeys[key](),
   async ({ pageParam = 1 }) => {
     const res = await client.get('/gestion-essence/list', { params: { page: pageParam } })
@@ -18,8 +18,11 @@ const useFetchGestionEssenceList = (key) => useInfiniteQuery(
 
       const nextPage = (Number(currentPage) + 1)
       return nextPage
+    },
+    onSuccess: () => {
+      onSettledFetch()
     }
-  }
+  },
 );
 
 export default useFetchGestionEssenceList;

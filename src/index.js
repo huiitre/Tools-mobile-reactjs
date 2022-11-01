@@ -1,10 +1,11 @@
 // == Import : npm
 import { render } from 'react-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import store from './store/store';
 
 import Routes from './routes';
@@ -26,6 +27,7 @@ const App = () => {
           <Routes />
           <ToastContainer icon={false} style={{ textAlign: 'center', fontSize: '1.25rem', fontWeight: 'bold' }} />
         </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Provider>
   )

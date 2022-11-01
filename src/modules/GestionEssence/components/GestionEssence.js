@@ -1,16 +1,27 @@
 import '../styles/gestion-essence.scss';
 import { toast } from 'react-toastify';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Separator from '../../Common/components/Separator'
 import useFetchGestionEssenceList from '../hooks/useFetchGestionEssenceList';
-import defaultToast from '../../Common/components/toast/defaultToast';
+import { defaultToast } from '../../Common/components/toast/toasts';
 import GestionEssenceItem from './GestionEssenceItem';
+import ReturnButton from '../../Common/components/form/buttons/ReturnButton';
+import AddButton from '../../Common/components/form/buttons/AddButton';
+import RemoveButton from '../../Common/components/form/buttons/RemoveButton';
+import ValidateButton from '../../Common/components/form/buttons/ValidateButton';
+import pushOrSpliceNumber from '../../../services/pushOrSpliceNumber'
+import useMutationDeleteTransaction from '../hooks/useMutationDeleteTransaction';
 
 const GestionEssence = () => {
+  //* récupération des transactions depuis l'api
+  const onSettledFetch = () => {
+    toast.dismiss('fetch-transaction')
+  }
   const {
     data, isFetching, fetchNextPage, hasNextPage, isLoading
-  } = useFetchGestionEssenceList('list')
+  } = useFetchGestionEssenceList('list', onSettledFetch)
 
+  //* eventListener du scroll down afin de changer de page et d'afficher plus de transactions
   useEffect(() => {
     window.addEventListener('scroll', () => {
       const totalPageHeight = document.body.scrollHeight
@@ -22,15 +33,62 @@ const GestionEssence = () => {
       window.removeEventListener('scroll', () => undefined)
   }, [])
 
-  console.log('%c GestionEssence.js #25 || data : ', 'background:red;color:#fff;font-weight:bold;', !isLoading && data);
+  //! AJOUT
+  //* HOOKS
+  const [popupAddTransaction, setPopupAddTransaction] = useState(false);
+
+  //! SUPPRESSION
+  //* HOOKS
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [transactionListToDelete, setTransactionListToDelete] = useState([]);
+
+  const onSuccessDelete = (res) => {
+    setTransactionListToDelete([])
+    setDeleteMode(false)
+    for (const val of res)
+      toast.success(val, defaultToast())
+  }
+  const onErrorDelete = (res) => {
+    for (const val of res)
+      toast.error(val, defaultToast())
+  }
+
+  //* on active le mode suppression multiple
+  const handleActiveDeleteMode = () => {
+    setDeleteMode(!deleteMode)
+  }
+
+  //* on récupère les transactions à supprimer
+  const handleSelectTransaction = (id) => {
+    const array = pushOrSpliceNumber(transactionListToDelete, id)
+    setTransactionListToDelete(array)
+  }
+
+  //* mutation suppression d'une transaction
+  const mutationDelete = useMutationDeleteTransaction({
+    list: transactionListToDelete, onSuccessDelete, onErrorDelete
+  })
+
+  //* suppression de notre sélections
+  const handleDelete = useCallback(async () => {
+    if (transactionListToDelete.length > 0) {
+      mutationDelete.mutate();
+    } else {
+      toast.error('Veuillez sélectionner au minimum une transaction !')
+    }
+  })
 
   return (
-    ((isFetching && hasNextPage) || isLoading) && toast.loading('Chargement des données ...', defaultToast),
-    !isFetching && toast.dismiss(),
+    ((isFetching && hasNextPage)) && toast.loading('Chargement des données ...', defaultToast('fetch-transaction')),
     !isLoading && (
       <div className="gestion-essence">
         <div className="gestion-essence__header">
-          <div className="gestion-essence__header__crud"></div>
+          <ReturnButton path="/" />
+          <div className="gestion-essence__header__crud">
+            {deleteMode === false && <AddButton callback={() => setPopupAddTransaction(!popupAddTransaction)} />}
+            {deleteMode === true && <ValidateButton callback={handleDelete} />}
+            <RemoveButton callback={handleActiveDeleteMode} />
+          </div>
         </div>
         <Separator />
         <div className="gestion-essence__content">
@@ -39,10 +97,18 @@ const GestionEssence = () => {
             <div className="infos__conso">Consommation : {data.pages[0].data.allConso} L / 100</div>
           </div>
           <Separator />
-          <div className="gestion-essence__content__list">
+          <div className={`gestion-essence__content__list ${deleteMode ? 'delete-mode' : ''}`}>
             {data.pages.map((group, i) => (
               <React.Fragment key={i}>
-                {group.data.result.map((item) => <GestionEssenceItem data={item} key={item.t_id} />)}
+                {group.data.result.map((item) => (
+                  <GestionEssenceItem
+                    data={item}
+                    key={item.t_id}
+                    callback={handleSelectTransaction}
+                    deleteMode={deleteMode}
+                    isSelected={!!transactionListToDelete.includes(Number(item.t_id))}
+                  />
+                ))}
               </React.Fragment>
             ))}
           </div>

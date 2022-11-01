@@ -7,7 +7,7 @@ export const dayMonthYear = (date) => {
   if (month.length < 2)
     month = `0${month}`
 
-  if (day.length < 2)
+  if (day.length < 1)
     day = `0${day}`
 
   return [day, month, year].join('-')

@@ -1,3 +1,5 @@
+@use '/src/assets/styles/vars';
+
 .gestion-essence {
 	&__header {
 		display: flex;
@@ -21,8 +23,15 @@
 			text-align: center;
 		}
 
-		& .list {
+		/* &__list {
 			width: 100%;
+		} */
+
+    &__list.delete-mode .transaction {
+			background-color: vars.$delete-mode;
+		}
+		&__list.delete-mode .transaction.delete-mode--selected {
+			background-color: vars.$delete-mode--selected;
 		}
 	}
 }

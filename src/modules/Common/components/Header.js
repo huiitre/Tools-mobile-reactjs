@@ -6,7 +6,7 @@ import useModal from '../hooks/useModal';
 import Modal from './Modal';
 import InputField from './form/fields/InputField';
 // import core from '../../../store/actions/core';
-import fastToast from './toast/fastToast';
+import { fastToast } from './toast/toasts';
 import LS from '../../../services/localStorage';
 import { destroySession } from '../../../store/reducers/core';
 
