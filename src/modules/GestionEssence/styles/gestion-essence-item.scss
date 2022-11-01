@@ -1,0 +1,25 @@
+@use '/src/assets/styles/vars';
+
+.transaction {
+  display: flex;
+  border: 1px solid vars.$white;
+  border-radius: 10px;
+  padding: 1rem;
+  justify-content: space-around;
+  
+  &:not(:last-child) {
+    margin: 2rem 0;
+  }
+
+  &__date,
+  &__montant,
+  &__conso {
+    font-weight: bold;
+  }
+}
+/* .delete-mode .transaction {
+	background-color: $delete-mode;
+}
+.delete-mode .transaction.delete-mode--selected {
+  background-color: $delete-mode--selected;
+} */

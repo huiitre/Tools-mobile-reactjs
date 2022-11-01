@@ -7,7 +7,8 @@ import { apiLoginCheck, apiLoadUser } from '../thunk/core';
 const initialState = {
   apiUrl: {
     instance: LS.get('core')?.instance || '',
-    protocol: LS.get('core')?.protocol || process.env.NODE_ENV === 'development' ? 'http' : 'https'
+    // protocol: LS.get('core')?.protocol || process.env.NODE_ENV === 'development' ? 'http' : 'https'
+    protocol: LS.get('core')?.protocol ? LS.get('core')?.protocol : (process.env.NODE_END == 'development' ? 'http' : 'https')
   },
   user: {
     username: '',
@@ -38,8 +39,9 @@ const coreSlice = createSlice({
 
       const { data } = action.payload
       const { username, password } = action.meta.arg
+      console.log('%c core.js #39 || data : ', 'background:red;color:#fff;font-weight:bold;', data);
 
-      state.user = { username, name: data.name, isLogged: true }
+      state.user = { username, name: data.data.name, isLogged: true }
 
       const json = {
         token: data.token,

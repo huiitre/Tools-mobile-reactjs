@@ -1,0 +1,28 @@
+.gestion-essence {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+	}
+	&__content {
+		& .infos {
+			font-size: 1rem;
+			font-weight: bold;
+			&__vehicle {
+				padding-bottom: 0.5rem;
+			}
+			&__conso {
+				padding-top: 0.5rem;
+			}
+		}
+		& .date {
+			font-size: 1.2rem;
+			font-weight: bold;
+			margin-bottom: 1.5rem;
+			text-align: center;
+		}
+
+		& .list {
+			width: 100%;
+		}
+	}
+}

@@ -7,6 +7,7 @@ import Header from './modules/Common/components/Header'
 import Spinner from './modules/Common/components/Spinner'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import GestionEssencePage from './pages/GestionEssencePage'
 import NotFoundPage from './pages/NotFoundPage'
 import LS from './services/localStorage'
 import { destroySession } from './store/reducers/core'
@@ -64,6 +65,7 @@ const Routes = () => {
           {isLogged && (
             <>
               <Route exact path="/" element={<HomePage />} />
+              <Route exact path="/gestion-essence" element={<GestionEssencePage />} />
               <Route exact path="/login" element={<NotFoundPage />} />
             </>
           )}
