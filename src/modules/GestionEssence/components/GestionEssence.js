@@ -11,6 +11,10 @@ import RemoveButton from '../../Common/components/form/buttons/RemoveButton';
 import ValidateButton from '../../Common/components/form/buttons/ValidateButton';
 import pushOrSpliceNumber from '../../../services/pushOrSpliceNumber'
 import useMutationDeleteTransaction from '../hooks/useMutationDeleteTransaction';
+import InputField from '../../Common/components/form/fields/InputField';
+import Modal from '../../Common/components/Modal';
+import useModal from '../../Common/hooks/useModal';
+import AddTransactionForm from './addTransactionForm';
 
 const GestionEssence = () => {
   //* récupération des transactions depuis l'api
@@ -35,7 +39,15 @@ const GestionEssence = () => {
 
   //! AJOUT
   //* HOOKS
-  const [popupAddTransaction, setPopupAddTransaction] = useState(false);
+  const { isShowing: isAddFormShowed, toggle: toggleAddForm } = useModal()
+
+  const handleAddForm = () => {
+    // toggleAddForm()
+  }
+
+  const handleSubmitAddForm = () => {
+    console.log('%c GestionEssence.js #48 || submit', 'background:blue;color:#fff;font-weight:bold;');
+  }
 
   //! SUPPRESSION
   //* HOOKS
@@ -81,39 +93,48 @@ const GestionEssence = () => {
   return (
     ((isFetching && hasNextPage)) && toast.loading('Chargement des données ...', defaultToast('fetch-transaction')),
     !isLoading && (
-      <div className="gestion-essence">
-        <div className="gestion-essence__header">
-          <ReturnButton path="/" />
-          <div className="gestion-essence__header__crud">
-            {deleteMode === false && <AddButton callback={() => setPopupAddTransaction(!popupAddTransaction)} />}
-            {deleteMode === true && <ValidateButton callback={handleDelete} />}
-            <RemoveButton callback={handleActiveDeleteMode} />
-          </div>
-        </div>
-        <Separator />
-        <div className="gestion-essence__content">
-          <div className="gestion-essence__content__infos">
-            <div className="infos__vehicle">Véhicule : Ford Fiesta</div>
-            <div className="infos__conso">Consommation : {data.pages[0].data.allConso} L / 100</div>
+      <>
+        <Modal
+          isShowing={isAddFormShowed}
+          hide={toggleAddForm}
+          title="Ajouter une transaction"
+        >
+          <AddTransactionForm />
+        </Modal>
+        <div className="gestion-essence">
+          <div className="gestion-essence__header">
+            <ReturnButton path="/" />
+            <div className="gestion-essence__header__crud">
+              {deleteMode === false && <AddButton callback={toggleAddForm} />}
+              {deleteMode === true && <ValidateButton callback={handleDelete} />}
+              <RemoveButton callback={handleActiveDeleteMode} />
+            </div>
           </div>
           <Separator />
-          <div className={`gestion-essence__content__list ${deleteMode ? 'delete-mode' : ''}`}>
-            {data.pages.map((group, i) => (
-              <React.Fragment key={i}>
-                {group.data.result.map((item) => (
-                  <GestionEssenceItem
-                    data={item}
-                    key={item.t_id}
-                    callback={handleSelectTransaction}
-                    deleteMode={deleteMode}
-                    isSelected={!!transactionListToDelete.includes(Number(item.t_id))}
-                  />
-                ))}
-              </React.Fragment>
-            ))}
+          <div className="gestion-essence__content">
+            <div className="gestion-essence__content__infos">
+              <div className="infos__vehicle">Véhicule : Ford Fiesta</div>
+              <div className="infos__conso">Consommation : {data.pages[0].data.allConso} L / 100</div>
+            </div>
+            <Separator />
+            <div className={`gestion-essence__content__list ${deleteMode ? 'delete-mode' : ''}`}>
+              {data.pages.map((group, i) => (
+                <React.Fragment key={i}>
+                  {group.data.result.map((item) => (
+                    <GestionEssenceItem
+                      data={item}
+                      key={item.t_id}
+                      callback={handleSelectTransaction}
+                      deleteMode={deleteMode}
+                      isSelected={!!transactionListToDelete.includes(Number(item.t_id))}
+                    />
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     )
   )
 };

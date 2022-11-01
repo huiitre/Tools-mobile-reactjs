@@ -24,7 +24,7 @@ const Header = () => {
       dispatch(destroySession())
       LS.clear()
       navigate('/login')
-      toast.success('Vous êtes déconnecté !', fastToast)
+      toast.success('Vous êtes déconnecté !', fastToast())
     }
     toggleLoginForm()
   }
