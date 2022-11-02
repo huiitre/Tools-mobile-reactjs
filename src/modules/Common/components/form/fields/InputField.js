@@ -9,21 +9,25 @@ const InputField = ({
   onChange,
   value,
   label,
-  onClick
-}) => (
-  <>
-    <label htmlFor={id}>{label}</label>
-    <input
-      type={type}
-      className={className}
-      id={id}
-      placeholder={placeholder}
-      name={name}
-      onChange={onChange}
-      value={value}
-      onClick={onClick}
-    />
-  </>
-);
+  onClick,
+  float
+}) => {
+  return (
+    <>
+      <label htmlFor={id}>{label}</label>
+      <input
+        type={type}
+        className={className}
+        id={id}
+        placeholder={placeholder}
+        name={name}
+        onChange={onChange}
+        value={value}
+        onClick={onClick}
+        step={float ? '0.01' : undefined}
+      />
+    </>
+  )
+};
 
 export default InputField;

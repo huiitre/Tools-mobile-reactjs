@@ -6,9 +6,9 @@ import { apiLoginCheck, apiLoadUser } from '../thunk/core';
 
 const initialState = {
   apiUrl: {
-    instance: LS.get('core')?.instance || '',
+    instance: LS.get('core')?.instance ? LS.get('core')?.instance : (process.env.NODE_ENV == 'development' ? 'localhost:5050' : 'api.tools.huiitre.fr'),
     // protocol: LS.get('core')?.protocol || process.env.NODE_ENV === 'development' ? 'http' : 'https'
-    protocol: LS.get('core')?.protocol ? LS.get('core')?.protocol : (process.env.NODE_END == 'development' ? 'http' : 'https')
+    protocol: LS.get('core')?.protocol ? LS.get('core')?.protocol : (process.env.NODE_ENV == 'development' ? 'http' : 'https')
   },
   user: {
     username: '',
@@ -39,7 +39,6 @@ const coreSlice = createSlice({
 
       const { data } = action.payload
       const { username, password } = action.meta.arg
-      console.log('%c core.js #39 || data : ', 'background:red;color:#fff;font-weight:bold;', data);
 
       state.user = { username, name: data.data.name, isLogged: true }
 
@@ -83,7 +82,7 @@ const coreSlice = createSlice({
     builder.addCase(apiLoadUser.pending, (state) => {
       state.connectionLoading = true
     })
-    builder.addCase(apiLoadUser.rejected, (state, action) => {
+    builder.addCase(apiLoadUser.rejected, (state) => {
       state.connectionLoading = false
       LS.clear()
       state.user = initialState.user

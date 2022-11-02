@@ -1,7 +1,8 @@
 .add-transaction__form {
 
   &__elem {
-    background-color: red;
+    // background-color: red;
+    border: 1px solid red;
   }
   &__elem:not(:last-child) {
     margin-bottom: 2rem;

@@ -1,7 +1,15 @@
-const gestionEssenceQueryKeys = {
+export const gestionEssenceQueryKeys = {
   base: ['gestion-essence'],
   list: () => [...gestionEssenceQueryKeys.base, 'list'],
   delete: () => [...gestionEssenceQueryKeys.base, 'delete']
 }
 
-export default gestionEssenceQueryKeys
+export const vehicleQueryKeys = {
+  base: ['vehicle'],
+  list: () => [...vehicleQueryKeys.base, 'list']
+}
+
+export const fuelQueryKeys = {
+  base: ['fuel'],
+  list: () => [...fuelQueryKeys.base, 'list']
+}

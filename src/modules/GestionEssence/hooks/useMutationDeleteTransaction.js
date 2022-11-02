@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import client from '../../../services/axiosInstance'
-import gestionEssenceQueryKeys from '../keys-constants'
+import { gestionEssenceQueryKeys } from '../keys-constants'
 
 const useMutationDeleteTransaction = ({
   list, onSuccessDelete, onErrorDelete
