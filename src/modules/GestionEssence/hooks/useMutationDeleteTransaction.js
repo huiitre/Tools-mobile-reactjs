@@ -3,7 +3,7 @@ import client from '../../../services/axiosInstance'
 import { gestionEssenceQueryKeys } from '../keys-constants'
 
 const useMutationDeleteTransaction = ({
-  list, onSuccessDelete, onErrorDelete
+  list, onSuccessDelete, onErrorDelete, onPendingDelete
 }) => {
   const queryClient = useQueryClient()
   const data = {
@@ -23,7 +23,8 @@ const useMutationDeleteTransaction = ({
       },
       onError: (e) => {
         onErrorDelete(e.response.data.msg)
-      }
+      },
+      onMutate: () => onPendingDelete()
     }
   )
 }

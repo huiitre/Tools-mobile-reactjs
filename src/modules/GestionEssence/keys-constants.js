@@ -1,7 +1,8 @@
 export const gestionEssenceQueryKeys = {
   base: ['gestion-essence'],
   list: () => [...gestionEssenceQueryKeys.base, 'list'],
-  delete: () => [...gestionEssenceQueryKeys.base, 'delete']
+  delete: () => [...gestionEssenceQueryKeys.base, 'delete'],
+  create: () => [...gestionEssenceQueryKeys.base, 'create']
 }
 
 export const vehicleQueryKeys = {

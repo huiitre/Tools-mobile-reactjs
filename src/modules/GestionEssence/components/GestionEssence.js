@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import React, { useEffect, useState, useCallback } from 'react';
 import Separator from '../../Common/components/Separator'
 import useFetchGestionEssenceList from '../hooks/useFetchGestionEssenceList';
-import { defaultToast } from '../../Common/components/toast/toasts';
+import { defaultToast, fastToast } from '../../Common/components/toast/toasts';
 import GestionEssenceItem from './GestionEssenceItem';
 import ReturnButton from '../../Common/components/form/buttons/ReturnButton';
 import AddButton from '../../Common/components/form/buttons/AddButton';
@@ -19,6 +19,7 @@ import Button from '../../Common/components/form/buttons/Button';
 import useFetchVehicle from '../hooks/useFetchVehicle';
 import useFetchFuel from '../hooks/useFetchFuel';
 import { clearObjectValue } from '../../../services/clearObjectValue';
+import { useMutationCreateTransaction } from '../hooks/useMutationCreateTransaction';
 
 const GestionEssence = () => {
   //* récupération des transactions depuis l'api
@@ -62,43 +63,37 @@ const GestionEssence = () => {
   const [{
     location, price_liter, tank, km_travelled, vehicle, fuel, transaction_date
   }, setForm] = useState(defaultState);
+
   const handleChange = (e) => {
     setForm({
       location, price_liter, tank, km_travelled, vehicle, fuel, transaction_date, [e.target.name]: e.target.value
     })
   }
 
+  const onSuccessCreate = (msg) => {
+    toggleAddForm()
+    setForm(defaultState)
+    for (const val of msg)
+      toast.success(val, fastToast())
+    toast.dismiss('loading-create')
+  }
+
+  const mutationAddTransaction = useMutationCreateTransaction({
+    location, price_liter: Number(price_liter), tank: Number(tank), km_travelled: Number(km_travelled), vehicle: Number(vehicle), fuel: Number(fuel), transaction_date
+  }, onSuccessCreate)
+
   const handleSubmitAddForm = (e) => {
     e.preventDefault()
-    const credentials = {
-      location,
-      price_liter,
-      tank,
-      km_travelled,
-      vehicle,
-      fuel,
-      transaction_date
-    }
 
     const errorMessage = 'Veuillez remplir tous les champs'
 
-    if (clearObjectValue(credentials) === 0)
+    if (clearObjectValue({
+      location, price_liter, tank, km_travelled, vehicle, fuel, transaction_date
+    }) === 0) {
       toast.error(errorMessage, defaultToast())
-
-    /* if (
-      location.length === 0 ||
-      (price_liter === null || price_liter == 0) ||
-      (tank === null || tank == 0) ||
-      (km_travelled === null || km_travelled == 0) ||
-      (vehicle === null || vehicle == 0) ||
-      (fuel === null || fuel == 0) ||
-      (price_liter === null || price_liter == 0)
-    ) */
-
-    /* if (location.length === 0)
-      msg.push('Le nom est vide')
-    if (price_liter === null || price_liter == 0)
-      msg.push('Le prix au litre est vide') */
+      return
+    }
+    mutationAddTransaction.mutate()
   }
 
   //! SUPPRESSION
@@ -111,10 +106,15 @@ const GestionEssence = () => {
     setDeleteMode(false)
     for (const val of res)
       toast.success(val, defaultToast())
+
+    toast.dismiss('loading-delete')
   }
   const onErrorDelete = (res) => {
     for (const val of res)
       toast.error(val, defaultToast())
+  }
+  const onPendingDelete = () => {
+    toast.loading('Suppression des données en cours ...', defaultToast('loading-delete'))
   }
 
   //* on active le mode suppression multiple
@@ -130,7 +130,7 @@ const GestionEssence = () => {
 
   //* mutation suppression d'une transaction
   const mutationDelete = useMutationDeleteTransaction({
-    list: transactionListToDelete, onSuccessDelete, onErrorDelete
+    list: transactionListToDelete, onSuccessDelete, onErrorDelete, onPendingDelete
   })
 
   //* suppression de notre sélections
@@ -161,7 +161,7 @@ const GestionEssence = () => {
                 placeholder="Nom"
                 id="form-location"
                 onChange={handleChange}
-                float
+                hiddenLabel
               />
             </div>
 
@@ -175,6 +175,7 @@ const GestionEssence = () => {
                 id="form-price_liter"
                 onChange={handleChange}
                 float
+                hiddenLabel
               />
             </div>
 
@@ -188,6 +189,7 @@ const GestionEssence = () => {
                 id="form-tank"
                 onChange={handleChange}
                 float
+                hiddenLabel
               />
             </div>
 
@@ -201,6 +203,7 @@ const GestionEssence = () => {
                 id="form-km_travelled"
                 onChange={handleChange}
                 float
+                hiddenLabel
               />
             </div>
 
@@ -212,6 +215,7 @@ const GestionEssence = () => {
                 type="date"
                 id="form-date"
                 onChange={handleChange}
+                hiddenLabel
               />
             </div>
 
@@ -225,6 +229,7 @@ const GestionEssence = () => {
                 optionText={['v_marque', 'v_modele', 'v_annee']}
                 data={dataVL}
                 onChange={handleChange}
+                hiddenLabel
               />
             </div>
 
@@ -238,6 +243,7 @@ const GestionEssence = () => {
                 optionText={['f_name']}
                 data={dataFuel}
                 onChange={handleChange}
+                hiddenLabel
               />
             </div>
 

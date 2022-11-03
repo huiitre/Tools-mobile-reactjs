@@ -10,11 +10,12 @@ const InputField = ({
   value,
   label,
   onClick,
-  float
+  float,
+  hiddenLabel
 }) => {
   return (
     <>
-      <label htmlFor={id}>{label}</label>
+      {!hiddenLabel && <label htmlFor={id}>{label}</label>}
       <input
         type={type}
         className={className}

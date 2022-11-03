@@ -1,10 +1,10 @@
 import '../../../styles/select.scss';
 
 const Select = ({
-  label, id, className, data, idkey, optionText, onChange, name
+  label, id, className, data, idkey, optionText, onChange, name, hiddenLabel
 }) => (
   <>
-    <label htmlFor={id}>{label}</label>
+    {!hiddenLabel && <label htmlFor={id}>{label}</label>}
     <select
       onChange={onChange}
       id={id}

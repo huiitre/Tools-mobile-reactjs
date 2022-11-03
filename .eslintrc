@@ -72,7 +72,8 @@
     "no-lone-blocks": "off",
     "no-unused-expressions": "off",
     "import/no-cycle": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "camelcase": "off"
   },
   "settings": {
     "import/resolver": {
