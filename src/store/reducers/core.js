@@ -34,7 +34,7 @@ const coreSlice = createSlice({
      * Connexion de l'utilisateur
      */
     builder.addCase(apiLoginCheck.fulfilled, (state, action) => {
-      toast.dismiss()
+      toast.dismiss('loading-login_check')
       toast.success('Vous êtes connecté !', defaultToast())
 
       const { data } = action.payload
@@ -52,17 +52,17 @@ const coreSlice = createSlice({
       LS.set('core', json)
     })
     builder.addCase(apiLoginCheck.pending, () => {
-      toast.loading('Connexion en cours ...', defaultToast())
+      toast.loading('Connexion en cours ...', defaultToast('loading-login_check'))
     })
     builder.addCase(apiLoginCheck.rejected, (state, action) => {
-      toast.dismiss()
-      const { error } = action
+      console.log('%c core.js #58 || rejected : ', 'background:red;color:#fff;font-weight:bold;', action);
+      toast.dismiss('loading-login_check')
+      const { payload } = action
       let msg;
       LS.clear()
-      if (error?.response?.data?.message) {
-        msg = error.response.data.message
+      if (payload?.response?.data?.message) {
+        msg = payload.response.data.message
       }
-      msg = 'Une erreur de connexion est survenue'
 
       toast.error(msg, defaultToast())
     })
