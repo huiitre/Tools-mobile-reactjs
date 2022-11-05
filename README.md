@@ -40,8 +40,9 @@ cordova run android
 2. Changer le numéro de version dans le fichier `src-cordova/config.xml`
 
 ## Notes de versions
-### 1.0 développement en cours
+### 1.0 05/11/2022
 - Mise en place du core initial de l'application avec les routes de connexion et de profil utilisateur
 - Ajout du module Gestion-Essence
   - Création / Suppression d'une transaction (plusieurs dans le cas d'une suppression)
   - Affichage du détail d'une transaction en appuyant dessus
+- Ajout de la page config avec pour l'instant des informations sur l'instance et l'utilisateur
