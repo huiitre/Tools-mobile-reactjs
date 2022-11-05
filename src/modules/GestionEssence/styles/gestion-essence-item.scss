@@ -17,9 +17,21 @@
     font-weight: bold;
   }
 }
-/* .delete-mode .transaction {
-	background-color: $delete-mode;
+
+/* MODAL */
+.transaction-detail {
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    & .name {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+  }
+  &__item:not(:last-child) {
+    margin-top: 1rem;
+  }
 }
-.delete-mode .transaction.delete-mode--selected {
-  background-color: $delete-mode--selected;
-} */

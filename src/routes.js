@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import LS from './services/localStorage'
 import { destroySession } from './store/reducers/core'
 import { apiLoadUser } from './store/thunk/core'
+import ConfigPage from './pages/ConfigPage'
 
 const Routes = () => {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ const Routes = () => {
           {isLogged && (
             <>
               <Route exact path="/" element={<HomePage />} />
+              <Route exact path="/configuration" element={<ConfigPage />} />
               <Route exact path="/gestion-essence" element={<GestionEssencePage />} />
               <Route exact path="/login" element={<NotFoundPage />} />
             </>

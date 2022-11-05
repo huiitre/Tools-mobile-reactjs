@@ -55,7 +55,6 @@ const coreSlice = createSlice({
       toast.loading('Connexion en cours ...', defaultToast('loading-login_check'))
     })
     builder.addCase(apiLoginCheck.rejected, (state, action) => {
-      console.log('%c core.js #58 || rejected : ', 'background:red;color:#fff;font-weight:bold;', action);
       toast.dismiss('loading-login_check')
       const { payload } = action
       let msg;

@@ -1,0 +1,26 @@
+@use '/src/assets/styles/vars';
+
+.config {
+  height: 100%;
+
+  &__bloc {
+    border: 2px solid vars.$white;
+    position: relative;
+    // display: flex;
+    padding: 1rem;
+
+    &__label {
+      position: absolute;
+      font-size: 1.5rem;
+      padding-left: 3vw;
+      top: -15px;
+      padding-right: 3vw;
+      background-color: vars.$main-background;
+      margin-left: 5vw;
+    }
+
+    & div:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

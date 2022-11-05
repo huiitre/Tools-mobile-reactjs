@@ -18,7 +18,7 @@ const useMutationDeleteTransaction = ({
     },
     {
       onSuccess: (res) => {
-        queryClient.invalidateQueries()
+        queryClient.invalidateQueries(gestionEssenceQueryKeys.list())
         onSuccessDelete(res.data.msg)
       },
       onError: (e) => {

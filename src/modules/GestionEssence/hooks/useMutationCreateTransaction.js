@@ -14,7 +14,7 @@ export const useMutationCreateTransaction = (credentials, callbackSuccess, callb
     },
     {
       onSuccess: (res) => {
-        queryClient.invalidateQueries()
+        queryClient.invalidateQueries(gestionEssenceQueryKeys.list())
         callbackSuccess(res.data.msg)
       },
       onError: (e) => {

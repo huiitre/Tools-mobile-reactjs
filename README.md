@@ -41,3 +41,7 @@ cordova run android
 
 ## Notes de versions
 ### 1.0 développement en cours
+- Mise en place du core initial de l'application avec les routes de connexion et de profil utilisateur
+- Ajout du module Gestion-Essence
+  - Création / Suppression d'une transaction (plusieurs dans le cas d'une suppression)
+  - Affichage du détail d'une transaction en appuyant dessus

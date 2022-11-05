@@ -53,7 +53,7 @@ const Header = () => {
       </Modal>
       <header className={`header ${!isLogged ? 'hidden' : ''}`}>
         <div className="header__config">
-          <Link className="link header__config-link" to="/config">
+          <Link className="link header__config-link" to="/configuration">
             <i className="header__config-icon bi bi-pencil-square"></i>
           </Link>
         </div>

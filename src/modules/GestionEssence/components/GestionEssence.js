@@ -90,7 +90,7 @@ const GestionEssence = () => {
     if (clearObjectValue({
       location, price_liter, tank, km_travelled, vehicle, fuel, transaction_date
     }) === 0) {
-      toast.error(errorMessage, defaultToast())
+      toast.error(errorMessage, fastToast())
       return
     }
     mutationAddTransaction.mutate()
@@ -105,16 +105,16 @@ const GestionEssence = () => {
     setTransactionListToDelete([])
     setDeleteMode(false)
     for (const val of res)
-      toast.success(val, defaultToast())
+      toast.success(val, fastToast())
 
     toast.dismiss('loading-delete')
   }
   const onErrorDelete = (res) => {
     for (const val of res)
-      toast.error(val, defaultToast())
+      toast.error(val, fastToast())
   }
   const onPendingDelete = () => {
-    toast.loading('Suppression des données en cours ...', defaultToast('loading-delete'))
+    toast.loading('Suppression des données en cours ...', fastToast('loading-delete'))
   }
 
   //* on active le mode suppression multiple
@@ -143,7 +143,7 @@ const GestionEssence = () => {
   })
 
   return (
-    ((isFetching && hasNextPage)) && toast.loading('Chargement des données ...', defaultToast('fetch-transaction')),
+    ((isFetching && hasNextPage)) && toast.loading('Chargement des données ...', fastToast('fetch-transaction')),
     !isLoading && (
       <>
         <Modal
